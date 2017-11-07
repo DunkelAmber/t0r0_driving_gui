@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+
+  <name>t0r0_driving_gui</name>
+  <version>0.1.0</version>
+  <description>The T0R0 driving gui</description>
+  <author email="stebonicelli@gmail.com">Stefano Bonicelli</author>
+  <maintainer email="stebonicelli@gmail.com">Stefano Bonicelli</maintainer>
+  <license>CC BY SA</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+
+</package>
