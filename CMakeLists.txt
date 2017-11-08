@@ -11,7 +11,7 @@ include(${QT_USE_FILE})
 
 qt4_wrap_cpp(MOC_FILES src/window.h src/joystick.h src/joypad.h)
 
-set(SOURCE_FILES src/main.cpp src/window.cpp src/joystick.cpp src/joypad.cpp ${MOC_FILES})
+set(SOURCE_FILES src/main.cpp src/window.cpp src/joystick.cpp src/joypad.cpp src/def.cpp ${MOC_FILES})
 
 add_executable(driving_gui ${SOURCE_FILES})
 target_link_libraries(driving_gui ${QT_LIBRARIES} ${catkin_LIBRARIES})

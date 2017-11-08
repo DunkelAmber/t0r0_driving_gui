@@ -1,15 +1,16 @@
 #ifndef JOYSTICK_H
 #define JOYSTICK_H
 
+#include <vector>
+
 #include <QWidget>
 #include <QtCore>
 #include <QSlider>
 
-// #include <ros/ros.h>
-// #include <std_msgs/String.h>
-// #include <std_msgs/UInt8MultiArray.h>
+#include <ros/ros.h>
+#include <std_msgs/UInt8MultiArray.h>
 
-#define SLIDER_ZERO 127
+#include "def.cpp"
 
 class Joystick : public QWidget
 {
@@ -20,6 +21,8 @@ class Joystick : public QWidget
 
 	private:
         QSlider *x, *y, *z;
+        std::vector<uint8_t> arm_pose;
+        std_msgs::UInt8MultiArray arm_pose_msg;
 
     public slots:
         void resetSlider();
@@ -27,7 +30,7 @@ class Joystick : public QWidget
         void xSliderMoved();
         void ySliderMoved();
         void zSliderMoved();
-		
+
 };
 
 #endif
