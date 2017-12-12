@@ -5,7 +5,10 @@ Joystick::Joystick(QWidget *parent) : QWidget(parent)
 {
     this->setWindowTitle("Joystick Emulator");
 
-    ros::init(int argc, char **argv, "joystick_emulator");
+    int argc;
+    char **argv;
+
+    ros::init(argc, argv, "joystick_emulator");
     ros::NodeHandle joystick_emulator_nh;
     ros::Publisher arm_pose_topic = joystick_emulator_nh.advertise<std_msgs::UInt8MultiArray>("arm_pose", 1);
 
