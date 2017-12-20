@@ -14,6 +14,3 @@
 #define AXES_ZERO (uint8_t)127
 #define AXES_MAX (uint8_t)255
 #define AXES_MIN (uint8_t)0
-
-// Utils
-#define LOOP_RATE 10

@@ -10,7 +10,7 @@ Joystick::Joystick(QWidget *parent) : QWidget(parent)
 
     ros::init(argc, argv, "joystick_emulator");
     ros::NodeHandle joystick_emulator_nh;
-    arm_pose_topic = joystick_emulator_nh.advertise<std_msgs::UInt8MultiArray>("arm_pose", 1);
+    joystick_topic = joystick_emulator_nh.advertise<std_msgs::UInt8MultiArray>("joystick", 1);
 
     x = new QSlider(this);
     x->setGeometry(30, 10, 20, 200);
@@ -71,17 +71,17 @@ void Joystick::zSliderMoved()
 
 void Joystick::rosLoop()
 {
-    arm_pose.clear();
-    arm_pose.push_back(x->value());
-    arm_pose.push_back(y->value());
-    arm_pose.push_back(z->value());
-    arm_pose.push_back(AXES_ZERO);
-    arm_pose.push_back(AXES_ZERO);
-    arm_pose.push_back(AXES_ZERO);
-    arm_pose.push_back(AXES_ZERO);
+    joystick_cmds.clear();
+    joystick_cmds.push_back(x->value());
+    joystick_cmds.push_back(y->value());
+    joystick_cmds.push_back(z->value());
+    joystick_cmds.push_back(AXES_ZERO);
+    joystick_cmds.push_back(AXES_ZERO);
+    joystick_cmds.push_back(AXES_ZERO);
+    joystick_cmds.push_back(AXES_ZERO);
 
-    arm_pose_msg.data = arm_pose;
-    arm_pose_topic.publish(arm_pose_msg);
+    joystick_msg.data = joystick_cmds;
+    joystick_topic.publish(joystick_msg);
 
     ros::spinOnce();
 }

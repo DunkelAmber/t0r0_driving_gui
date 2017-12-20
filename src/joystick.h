@@ -24,9 +24,9 @@ class Joystick : public QWidget
         QSlider *x, *y, *z;
         QTimer *ros_timer;
 
-        std::vector<uint8_t> arm_pose;
-        std_msgs::UInt8MultiArray arm_pose_msg;
-        ros::Publisher arm_pose_topic;
+        std::vector<uint8_t> joystick_cmds;
+        std_msgs::UInt8MultiArray joystick_msg;
+        ros::Publisher joystick_topic;
 
     public slots:
         void resetSlider();
