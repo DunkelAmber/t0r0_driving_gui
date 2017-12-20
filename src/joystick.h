@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QtCore>
 #include <QSlider>
+#include <QTimer>
 
 #include <ros/ros.h>
 #include <std_msgs/UInt8MultiArray.h>
@@ -21,8 +22,11 @@ class Joystick : public QWidget
 
 	private:
         QSlider *x, *y, *z;
+        QTimer *ros_timer;
+
         std::vector<uint8_t> arm_pose;
         std_msgs::UInt8MultiArray arm_pose_msg;
+        ros::Publisher arm_pose_topic;
 
     public slots:
         void resetSlider();
@@ -30,6 +34,8 @@ class Joystick : public QWidget
         void xSliderMoved();
         void ySliderMoved();
         void zSliderMoved();
+
+        void rosLoop();
 
 };
 

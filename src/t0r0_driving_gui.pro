@@ -11,6 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = gui
 TEMPLATE = app
 
-SOURCES += main.cpp window.cpp joystick.cpp joypad.cpp
+SOURCES += main.cpp window.cpp joystick.cpp joypad.cpp def.cpp
 
 HEADERS  += window.h joystick.h joypad.h

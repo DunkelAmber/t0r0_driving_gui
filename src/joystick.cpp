@@ -5,14 +5,12 @@ Joystick::Joystick(QWidget *parent) : QWidget(parent)
 {
     this->setWindowTitle("Joystick Emulator");
 
-    int argc;
-    char **argv;
+    int argc = 0;
+    char *argv[1];
 
     ros::init(argc, argv, "joystick_emulator");
     ros::NodeHandle joystick_emulator_nh;
-    ros::Publisher arm_pose_topic = joystick_emulator_nh.advertise<std_msgs::UInt8MultiArray>("arm_pose", 1);
-
-    ros::Rate loop_rate(LOOP_RATE);
+    arm_pose_topic = joystick_emulator_nh.advertise<std_msgs::UInt8MultiArray>("arm_pose", 1);
 
     x = new QSlider(this);
     x->setGeometry(30, 10, 20, 200);
@@ -32,6 +30,10 @@ Joystick::Joystick(QWidget *parent) : QWidget(parent)
     z->setRange(AXES_MIN, AXES_MAX);
     z->setValue(AXES_ZERO);
 
+    ros_timer = new QTimer(this);
+    ros_timer->setInterval(100);
+    ros_timer->setSingleShot(false);
+
     connect(x, SIGNAL(sliderReleased()), this, SLOT(resetSlider()));
     connect(y, SIGNAL(sliderReleased()), this, SLOT(resetSlider()));
     connect(z, SIGNAL(sliderReleased()), this, SLOT(resetSlider()));
@@ -40,23 +42,9 @@ Joystick::Joystick(QWidget *parent) : QWidget(parent)
     connect(y, SIGNAL(valueChanged(int)), this, SLOT(ySliderMoved()));
     connect(z, SIGNAL(valueChanged(int)), this, SLOT(zSliderMoved()));
 
-    while(ros::ok())
-    {
-        arm_pose.clear();
-        arm_pose.push_back(x->value());
-        arm_pose.push_back(y->value());
-        arm_pose.push_back(z->value());
-        arm_pose.push_back(AXES_ZERO);
-        arm_pose.push_back(AXES_ZERO);
-        arm_pose.push_back(AXES_ZERO);
-        arm_pose.push_back(AXES_ZERO);
+    connect(ros_timer, SIGNAL(timeout()), this, SLOT(rosLoop()));
 
-        arm_pose_msg.data = arm_pose;
-        arm_pose_topic.publish(arm_pose_msg);
-
-        loop_rate.sleep();
-        ros::spinOnce();
-    }
+    ros_timer->start();
 }
 
 void Joystick::resetSlider()
@@ -79,4 +67,21 @@ void Joystick::ySliderMoved()
 void Joystick::zSliderMoved()
 {
 
+}
+
+void Joystick::rosLoop()
+{
+    arm_pose.clear();
+    arm_pose.push_back(x->value());
+    arm_pose.push_back(y->value());
+    arm_pose.push_back(z->value());
+    arm_pose.push_back(AXES_ZERO);
+    arm_pose.push_back(AXES_ZERO);
+    arm_pose.push_back(AXES_ZERO);
+    arm_pose.push_back(AXES_ZERO);
+
+    arm_pose_msg.data = arm_pose;
+    arm_pose_topic.publish(arm_pose_msg);
+
+    ros::spinOnce();
 }
