@@ -31,7 +31,6 @@ class Window : public QWidget
     public slots:
         void showJoystick();
         void showJoypad();
-
 };
 
 #endif // WINDOW_H

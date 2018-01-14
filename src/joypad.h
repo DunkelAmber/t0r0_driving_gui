@@ -21,7 +21,7 @@ class Joypad : public QWidget
 		explicit Joypad(QWidget *parent = 0);
 
 	private:
-        QSlider *dx, *sx, *all;
+        QSlider *dx, *sx, *all, *slip;
         QTimer *ros_timer;
 
         std::vector<uint8_t> joypad_cmds;
@@ -34,6 +34,7 @@ class Joypad : public QWidget
         void sxSliderMoved();
         void dxSliderMoved();
         void allSliderMoved();
+        void slipSliderMoved();
 
         void rosLoop();
 };
