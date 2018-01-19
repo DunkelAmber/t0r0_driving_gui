@@ -9,8 +9,8 @@ Joystick::Joystick(QWidget *parent) : QWidget(parent)
     char *argv[1];
 
     ros::init(argc, argv, "joystick_emulator");
-    ros::NodeHandle joystick_emulator_nh;
-    joystick_topic = joystick_emulator_nh.advertise<std_msgs::UInt8MultiArray>("joystick", 1);
+    ros::NodeHandle nh;
+    joystick_topic = nh.advertise<std_msgs::UInt8MultiArray>("joystick", 1);
 
     x = new QSlider(this);
     x->setGeometry(30, 10, 20, 200);
@@ -45,6 +45,11 @@ Joystick::Joystick(QWidget *parent) : QWidget(parent)
     connect(ros_timer, SIGNAL(timeout()), this, SLOT(rosLoop()));
 
     ros_timer->start();
+}
+
+void Joystick::closeEvent(QCloseEvent *event)
+{
+    ros_timer->stop();
 }
 
 void Joystick::resetSlider()

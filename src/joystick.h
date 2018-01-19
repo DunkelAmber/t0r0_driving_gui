@@ -28,6 +28,8 @@ class Joystick : public QWidget
         std_msgs::UInt8MultiArray joystick_msg;
         ros::Publisher joystick_topic;
 
+        void closeEvent(QCloseEvent *event);
+
     public slots:
         void resetSlider();
 

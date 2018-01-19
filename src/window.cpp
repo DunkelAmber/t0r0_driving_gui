@@ -42,7 +42,6 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     connect(disp_joystick, SIGNAL(clicked(bool)), this, SLOT(showJoystick()));
     connect(disp_joypad, SIGNAL(clicked(bool)), this, SLOT(showJoypad()));
-
 }
 
 void Window::showJoystick()
@@ -61,13 +60,13 @@ void Window::joystickCallback(const std_msgs::UInt8MultiArray::ConstPtr& msg)
 {
     QString data;
 
-    data = QString::number(msg->data[0]) + " ";
+    data  = QString::number(msg->data[0]) + " ";
     data += QString::number(msg->data[1]) + " ";
-    data += QString::number(msg->data[2]) + " " ;
-    data += QString::number(msg->data[3]) + " " ;
-    data += QString::number(msg->data[4]) + " " ;
-    data += QString::number(msg->data[5]) + " " ;
-    data += QString::number(msg->data[6]) + " " ;
+    data += QString::number(msg->data[2]) + " ";
+    data += QString::number(msg->data[3]) + " ";
+    data += QString::number(msg->data[4]) + " ";
+    data += QString::number(msg->data[5]) + " ";
+    data += QString::number(msg->data[6]) + " ";
 
     joystick_data->setText(data);
 }

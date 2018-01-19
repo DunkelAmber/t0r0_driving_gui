@@ -9,8 +9,8 @@ Joypad::Joypad(QWidget *parent) : QWidget(parent)
     char *argv[1];
 
     ros::init(argc, argv, "joypad_emulator");
-    ros::NodeHandle joypad_emulator_nh;
-    joypad_topic = joypad_emulator_nh.advertise<std_msgs::UInt8MultiArray>("joypad", 1);
+    ros::NodeHandle nh;
+    joypad_topic = nh.advertise<std_msgs::UInt8MultiArray>("joypad", 1);
 
     sx = new QSlider(this);
     sx->setOrientation(Qt::Vertical);
@@ -53,6 +53,11 @@ Joypad::Joypad(QWidget *parent) : QWidget(parent)
     connect(ros_timer, SIGNAL(timeout()), this, SLOT(rosLoop()));
 
     ros_timer->start();
+}
+
+void Joypad::closeEvent(QCloseEvent *event)
+{
+    ros_timer->stop();
 }
 
 void Joypad::resetSlider()
