@@ -18,7 +18,8 @@ find_package(Qt5Widgets REQUIRED)
 include_directories(${Qt5Core_INCLUDE_DIRS})
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
-set(SOURCE_FILES src/main.cpp src/window.h src/joystick.h src/joypad.h src/window.cpp src/joystick.cpp src/joypad.cpp src/def.cpp)
+set(HEADER_FILES src/window.h src/joystick.h src/joypad.h)
+set(SOURCE_FILES src/main.cpp  src/window.cpp src/joystick.cpp src/joypad.cpp src/def.cpp)
 
-add_executable(driving_gui ${SOURCE_FILES})
+add_executable(driving_gui ${HEADER_FILES} ${SOURCE_FILES})
 target_link_libraries(driving_gui Qt5Core Qt5Widgets ${catkin_LIBRARIES})
