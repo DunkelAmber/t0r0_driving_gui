@@ -11,6 +11,7 @@ Joystick::Joystick(QWidget *parent) : QWidget(parent)
     ros::init(argc, argv, "joystick_emulator");
     ros::NodeHandle nh;
     joystick_topic = nh.advertise<std_msgs::UInt8MultiArray>("joystick", 1);
+    joystick_subscriber = nh.subscribe("/joystick", 1, &Joystick::joystickCallback, this);
 
     x = new QSlider(this);
     x->setGeometry(30, 10, 20, 200);
@@ -89,4 +90,17 @@ void Joystick::rosLoop()
     joystick_topic.publish(joystick_msg);
 
     ros::spinOnce();
+}
+
+void Joystick::joystickCallback(const std_msgs::UInt8MultiArray::ConstPtr& msg)
+{
+    QString data;
+
+    data  = QString::number(msg->data[0]) + " ";
+    data += QString::number(msg->data[1]) + " ";
+    data += QString::number(msg->data[2]) + " ";
+    data += QString::number(msg->data[3]) + " ";
+    data += QString::number(msg->data[4]) + " ";
+    data += QString::number(msg->data[5]) + " ";
+    data += QString::number(msg->data[6]) + " ";
 }

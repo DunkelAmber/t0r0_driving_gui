@@ -1,13 +1,16 @@
 #include <QApplication>
+#include <QDesktopWidget>
 
 #include "window.h"
 
 int main(int argc, char **argv)
 {
-  QApplication app (argc, argv);
+  QApplication app(argc, argv);
 
-  Window window;
-  window.show();
+  QDesktopWidget *desktop = app.desktop();
+
+  Window window(desktop->screenGeometry());
+  window.showMaximized();
 
   return app.exec();
 }

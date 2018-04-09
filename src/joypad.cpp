@@ -11,6 +11,7 @@ Joypad::Joypad(QWidget *parent) : QWidget(parent)
     ros::init(argc, argv, "joypad_emulator");
     ros::NodeHandle nh;
     joypad_topic = nh.advertise<std_msgs::UInt8MultiArray>("joypad", 1);
+    joypad_subscriber = nh.subscribe("/joypad", 1, &Joypad::joypadCallback, this);
 
     sx = new QSlider(this);
     sx->setOrientation(Qt::Vertical);
@@ -100,4 +101,12 @@ void Joypad::rosLoop()
     joypad_topic.publish(joypad_msg);
 
     ros::spinOnce();
+}
+
+void Joypad::joypadCallback(const std_msgs::UInt8MultiArray::ConstPtr& msg)
+{
+    QString data;
+
+    data = QString::number(msg->data[0]) + " ";
+    data += QString::number(msg->data[1]) + " ";
 }

@@ -1,82 +1,47 @@
 #include "window.h"
 
 // Constructor
-Window::Window(QWidget *parent) : QWidget(parent)
+Window::Window(QRect screen, QWidget *parent) : QWidget(parent)
 {
-    this->setWindowTitle("T0R0 Driving Gui");
+    this->setGeometry(0, 0, screen.width(), screen.height());   // -50
 
-    int argc = 0;
-    char *argv[1];
+    // set black background
+    QPalette pal = palette();
+    pal.setColor(QPalette::Background, Qt::black);
+    this->setAutoFillBackground(true);
+    this->setPalette(pal);
 
-	// Setup Ros
-    ros::init(argc, argv, "gui_main_window");
-    ros::NodeHandle nh;
+    connected = false;
 
-    joystick_subscriber = nh.subscribe("/joystick", 1, &Window::joystickCallback, this);
-    joypad_subscriber = nh.subscribe("/joypad", 1, &Window::joypadCallback, this);
+    // Custom elements
+    start_button = new StartButton(this);
+    start_button->setGeometry(this->width()/ 2 - 100, this->height() - 100, 200, 100);
 
-    joystick_box = new QGroupBox("Joystick");
-    joystick_layout = new QVBoxLayout();
+    rover = new RoverShow(this);
+    rover->setGeometry(300, 0, this->width() - 600, this->height() - 100);
 
-        joystick_data = new QLabel("000 000 000 000 000 000 000");
-        disp_joystick = new QPushButton("Joystick Emulator");
+    battery1 = new BatteryIndicator(this);
+    battery1->setGeometry(this->width() / 2 + 200, this->height() - 80, 21, 70);
+    battery2 = new BatteryIndicator(this);
+    battery2->setGeometry(this->width() / 2 + 230, this->height() - 80, 21, 70);
+    battery3 = new BatteryIndicator(this);
+    battery3->setGeometry(this->width() / 2 + 260, this->height() - 80, 21, 70);
+    battery4 = new BatteryIndicator(this);
+    battery4->setGeometry(this->width() / 2 + 290, this->height() - 80, 21, 70);
+    battery5 = new BatteryIndicator(this);
+    battery5->setGeometry(this->width() / 2 + 320, this->height() - 80, 21, 70);
+    battery6 = new BatteryIndicator(this);
+    battery6->setGeometry(this->width() / 2 + 350, this->height() - 80, 21, 70);
+    battery7 = new BatteryIndicator(this);
+    battery7->setGeometry(this->width() / 2 + 380, this->height() - 80, 21, 70);
+    battery8 = new BatteryIndicator(this);
+    battery8->setGeometry(this->width() / 2 + 410, this->height() - 80, 21, 70);
+    battery9 = new BatteryIndicator(this);
+    battery9->setGeometry(this->width() / 2 + 440, this->height() - 80, 21, 70);
+    battery10 = new BatteryIndicator(this);
+    battery10->setGeometry(this->width() / 2 + 470, this->height() - 80, 21, 70);
 
-    joystick_layout->addWidget(joystick_data);
-    joystick_layout->addWidget(disp_joystick);
-    joystick_box->setLayout(joystick_layout);
-
-    joypad_box = new QGroupBox("Joypad");
-    joypad_layout = new QVBoxLayout();
-
-        joypad_data = new QLabel("000 000");
-        disp_joypad = new QPushButton("Joypad Emulator");
-
-    joypad_layout->addWidget(joypad_data);
-    joypad_layout->addWidget(disp_joypad);
-    joypad_layout->addStretch(2);
-    joypad_box->setLayout(joypad_layout);
-
-    main_layout = new QGridLayout(this);
-    main_layout->addWidget(joystick_box, 0, 0);
-    main_layout->addWidget(joypad_box, 1, 0);
-
-    connect(disp_joystick, SIGNAL(clicked(bool)), this, SLOT(showJoystick()));
-    connect(disp_joypad, SIGNAL(clicked(bool)), this, SLOT(showJoypad()));
-}
-
-void Window::showJoystick()
-{
-    joystick_emulator = new Joystick();
-    joystick_emulator->show();
-}
-
-void Window::showJoypad()
-{
-    joypad_emulator = new Joypad();
-    joypad_emulator->show();
-}
-
-void Window::joystickCallback(const std_msgs::UInt8MultiArray::ConstPtr& msg)
-{
-    QString data;
-
-    data  = QString::number(msg->data[0]) + " ";
-    data += QString::number(msg->data[1]) + " ";
-    data += QString::number(msg->data[2]) + " ";
-    data += QString::number(msg->data[3]) + " ";
-    data += QString::number(msg->data[4]) + " ";
-    data += QString::number(msg->data[5]) + " ";
-    data += QString::number(msg->data[6]) + " ";
-
-    joystick_data->setText(data);
-}
-
-void Window::joypadCallback(const std_msgs::UInt8MultiArray::ConstPtr& msg)
-{
-    QString data;
-
-    data = QString::number(msg->data[0]) + " ";
-    data += QString::number(msg->data[1]) + " ";
-
-    joypad_data->setText(data);
+    battery2->setCharge(70);
+    battery3->setCharge(45);
+    battery4->setCharge(10);
 }

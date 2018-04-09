@@ -17,27 +17,28 @@ class Joystick : public QWidget
 {
 	Q_OBJECT
 
-	public:
-		explicit Joystick(QWidget *parent = 0);
+public:
+    explicit Joystick(QWidget *parent = 0);
 
-	private:
-        QSlider *x, *y, *z;
-        QTimer *ros_timer;
+private:
+    QSlider *x, *y, *z;
+    QTimer *ros_timer;
 
-        std::vector<uint8_t> joystick_cmds;
-        std_msgs::UInt8MultiArray joystick_msg;
-        ros::Publisher joystick_topic;
+    std::vector<uint8_t> joystick_cmds;
+    std_msgs::UInt8MultiArray joystick_msg;
+    ros::Publisher joystick_topic;
+    ros::Subscriber joystick_subscriber;
 
-        void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event);
+    void joystickCallback(const std_msgs::UInt8MultiArray::ConstPtr& msg);
 
-    public slots:
-        void resetSlider();
+private slots:
+    void resetSlider();
+    void xSliderMoved();
+    void ySliderMoved();
+    void zSliderMoved();
 
-        void xSliderMoved();
-        void ySliderMoved();
-        void zSliderMoved();
-
-        void rosLoop();
+    void rosLoop();
 
 };
 
